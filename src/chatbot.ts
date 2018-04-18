@@ -26,10 +26,9 @@ export default class {
               sourceId = event.source.userId
             }
 
-            console.log(fs.readFileSync('./source.json').toString())
             let sources = JSON.parse(fs.readFileSync('./source.json').toString())
             sources.push(sourceId)
-            fs.writeFileSync('./source.json', sourceId)
+            fs.writeFileSync('./source.json', JSON.stringify(sources))
 
             return this.client.replyMessage(event.replyToken, {
               type: 'text',
