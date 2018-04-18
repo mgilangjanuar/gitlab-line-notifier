@@ -10,7 +10,9 @@ app.use('/webhook', chatbot.middleware, (req: express.Request, res: express.Resp
 })
 
 app.use(bodyParser.json())
-app.use('/gitlab', chatbot.pushNotification)
+app.use('/gitlab', (req: express.Request, res: express.Response) => {
+  chatbot.pushNotification(req, res)
+})
 
 app.use('/ping', (req: express.Request, res: express.Response) => {
   return res.json({ pong: 1 })
