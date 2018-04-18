@@ -5,13 +5,11 @@ import bodyParser from 'body-parser'
 const app       = express.default()
 const chatbot   = new Chatbot()
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-
 app.use('/webhook', chatbot.middleware, (req: express.Request, res: express.Response) => {
   chatbot.webhook(req, res)
 })
 
+app.use(bodyParser.json())
 app.use('/gitlab', chatbot.pushNotification)
 
 app.use('/ping', (req: express.Request, res: express.Response) => {

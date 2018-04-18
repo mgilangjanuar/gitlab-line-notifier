@@ -4,7 +4,6 @@ import * as line from '@line/bot-sdk'
 
 
 dotenv.config()
-console.log(process.env.CHANNEL_ACCESS_TOKEN)
 
 export default class {
 
