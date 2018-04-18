@@ -32,7 +32,7 @@ export default class {
 
             return this.client.replyMessage(event.replyToken, {
               type: 'text',
-              text: JSON.stringify(`Successfully integrate to ${sources.map((s: any) => { return `- ${s}` }).join('\n')}`)
+              text: `Successfully integrate to ${sources.map((s: any) => { return `- ${s}` }).join('\n')}`
             })
           }
         }
