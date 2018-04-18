@@ -8,7 +8,7 @@ LINE chat bot for GitLab notification on an event triggered.
  - Typescript > 2.0
 
 ## How to start
- - Create LINE chat bot (https://developers.line.me/en/)
+ - Create LINE chat bot with developer trial (or premium plan *pfftt...*) (https://developers.line.me/en/)
  - Define global variables with `CHANNEL_SECRET` and `CHANNEL_ACCESS_TOKEN` (see `.env.example`)
  - Deploy this code to your own server by run:
 
