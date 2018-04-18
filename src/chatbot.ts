@@ -31,7 +31,7 @@ export default class {
     this.client.pushMessage('U8933e23b5d44f3ec1eb20d74a31244bd', {
       type: 'text',
       text: `${data.user_name} ${data.event_name} to ${data.ref} in ${data.project.name} project.\n\n` +
-        data.commits.maps((commit: any) => { return `- ${commit.message} (${commit.url})` }).join('\n\n')
+        data.commits.map((commit: any) => { return `- ${commit.message} (${commit.url})` }).join('\n\n')
     })
     return 'OK'
   }
