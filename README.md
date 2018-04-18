@@ -17,7 +17,7 @@ npm install
 npm start
 ```
 
- - Add integrations to your repository in GitLab (https://gitlab.com/parabot/line-notifier/settings/integrations)
+ - Add integrations to your repository in GitLab (https://gitlab.com/[my_username/group]/[my_repository]/settings/integrations)
  - Integrate to your group/room/personal chat by add your bot and type `/integrate`
 
 ## How to contribute
