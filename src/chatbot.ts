@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import fs from 'fs'
 import * as express from 'express'
 import * as line from '@line/bot-sdk'
 
@@ -14,11 +15,26 @@ export default class {
     Promise
       .all(req.body.events.map(async (event: line.WebhookEvent) => {
         console.log(event)
-        if (event.type === 'message' && event.message.type === 'text' && event.message.text.toLowerCase() === '/ping') {
-          return this.client.replyMessage(event.replyToken, {
-            type: 'text',
-            text: JSON.stringify(event)
-          })
+        if (event.type === 'message' && event.message.type === 'text') {
+          if (event.message.text.toLowerCase() === '/integrate') {
+            let sourceId
+            if (event.source.type === 'group') {
+              sourceId = event.source.groupId
+            } else if (event.source.type === 'room') {
+              sourceId = event.source.roomId
+            } else {
+              sourceId = event.source.userId
+            }
+
+            let sources = JSON.parse(fs.readFileSync('./source.json').toString())
+            sources.push(sourceId)
+            fs.writeFileSync('./source.json', sourceId)
+
+            return this.client.replyMessage(event.replyToken, {
+              type: 'text',
+              text: JSON.stringify(`Successfully integrate to ${sources.map((s: any) => { return `- ${s}` }).join('\n')}`)
+            })
+          }
         }
         return Promise.resolve(null)
       }))
@@ -28,10 +44,13 @@ export default class {
 
   public pushNotification(req: express.Request, res: express.Response) {
     let data = req.body
-    this.client.pushMessage('Cc8f4d3204a3f19df6e6b434418d4a63e', {
-      type: 'text',
-      text: `${data.user_name} ${data.event_name} to ${data.ref} in ${data.project.name} project.\n\n` +
-        data.commits.map((commit: any) => { return `- ${commit.message} (${commit.url})` }).join('\n\n')
+    let sources = JSON.parse(fs.readFileSync('./source.json').toString())
+    sources.forEach((sourceId: any) => {
+      this.client.pushMessage(sourceId, {
+        type: 'text',
+        text: `${data.user_name} ${data.event_name} to ${data.ref} in ${data.project.name} project.\n\n` +
+          data.commits.map((commit: any) => { return `- ${commit.message} (${commit.url})` }).join('\n\n')
+      })
     })
     return res.json({ ok: true })
   }
