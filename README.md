@@ -1,7 +1,7 @@
 GitLab LINE Notifier
 ====================
 
-GitLab notification for LINE app on trigger events.
+LINE chat bot for GitLab notification on an event triggered.
 
 ## Requirements
  - NodeJS > 6.0
