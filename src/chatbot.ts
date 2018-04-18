@@ -29,7 +29,7 @@ export default class {
             this.sources.push(sourceId)
             return this.client.replyMessage(event.replyToken, {
               type: 'text',
-              text: `Successfully integrate to ${this.sources.map((s: any) => { return `- ${s}` }).join('\n')}`
+              text: `Successfully integrate to:\n${this.sources.map((s: any) => { return `- ${s}` }).join('\n')}`
             })
           }
         }
