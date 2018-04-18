@@ -10,6 +10,7 @@ export default class {
 
   public client: line.Client = new line.Client({ channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN as string })
   public middleware: any     = line.middleware({ channelSecret: process.env.CHANNEL_SECRET as string })
+  public sources: string[]   = [] 
 
   public webhook(req: express.Request, res: express.Response) {
     Promise
@@ -25,14 +26,10 @@ export default class {
             } else {
               sourceId = event.source.userId
             }
-
-            let sources = JSON.parse(fs.readFileSync('./source.json').toString())
-            sources.push(sourceId)
-            fs.writeFileSync('./source.json', JSON.stringify(sources))
-
+            this.sources.push(sourceId)
             return this.client.replyMessage(event.replyToken, {
               type: 'text',
-              text: `Successfully integrate to ${sources.map((s: any) => { return `- ${s}` }).join('\n')}`
+              text: `Successfully integrate to ${this.sources.map((s: any) => { return `- ${s}` }).join('\n')}`
             })
           }
         }
@@ -44,8 +41,7 @@ export default class {
 
   public pushNotification(req: express.Request, res: express.Response) {
     let data = req.body
-    let sources = JSON.parse(fs.readFileSync('./source.json').toString())
-    sources.forEach((sourceId: any) => {
+    this.sources.forEach((sourceId: any) => {
       this.client.pushMessage(sourceId, {
         type: 'text',
         text: `${data.user_name} ${data.event_name} to ${data.ref} in ${data.project.name} project.\n\n` +
