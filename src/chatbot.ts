@@ -26,7 +26,9 @@ export default class {
             } else {
               sourceId = event.source.userId
             }
-            this.sources.push(sourceId)
+            if (this.sources.indexOf(sourceId) === -1) {
+              this.sources.push(sourceId)
+            }
             return this.client.replyMessage(event.replyToken, {
               type: 'text',
               text: `Successfully integrate to:\n${this.sources.map((s: any) => { return `- ${s}` }).join('\n')}`
